@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "knot-warc"
+version = "0.2.4"
+authors = [{ name = "Anand Chitipothu" },
+    { name = "Noufal Ibrahim" },
+    { name = "Ryan Chartier" },
+    { name = "Jan Pieter Bruins Slot" },
+    { name = "Almer S. Tigelaar" },
+    { name = "Willian Zhang" },
+    { name = "Michal Šmahel" }]
+description = "Python library to work with ARC, WARC and WET files"
+readme = "README.md"
+requires-python = ">=3.3"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Operating System :: OS Independent",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+]
+dependencies = ["nose"]
+
+[project.urls]
+"Homepage" = "https://github.com/KNOT-FIT-BUT/warc3"
+"Bug Tracker" = "https://github.com/KNOT-FIT-BUT/warc3/issues"
