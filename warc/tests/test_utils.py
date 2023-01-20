@@ -18,7 +18,7 @@ class TestCaseInsensitiveDict:
         assert sorted(d.items()) == [("bar", 2), ("foo", 1)]
 
 class TestFilePart:
-    def setup(self):
+    def setup_method(self):
         # 5 chars in each line
         self.text = b"\n".join([b"aaaa", b"bbbb", b"cccc", b"dddd", b"eeee", b"ffff"])
 

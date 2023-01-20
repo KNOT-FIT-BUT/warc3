@@ -1,0 +1,28 @@
+# Github Action for version check
+
+name: 'Tests'
+
+on: pull_request
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    name: Check configured version
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: version
+        name: Get configured version
+        run: echo "VERSION=$(grep -oE 'version = "([0-9.+]+)"' pyproject.toml | sed -E 's/.*"([0-9.]+)"/\1/g')" >> $GITHUB_OUTPUT
+
+      - id: lasttag
+        name: Get last tag (named by old version)
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: v0.2.3
+
+      - name: Check version correctness
+        env:
+          OLD_VERSION: ${{ steps.lasttag.outputs.tag }}
+          NEW_VERSION: ${{ steps.version.outputs.VERSION }}
+        run: dpkg --compare-versions "$NEW_VERSION" "gt" $(echo "$OLD_VERSION" | sed -E 's/v(.*)/\1/')
