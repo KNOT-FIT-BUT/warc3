@@ -1,0 +1,42 @@
+# Github Action for automatic tests
+
+name: 'Tests'
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build a pip package
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: python3 -m pip install --upgrade pip build
+
+      - name: Build a Python package for pip
+        run: python3 -m build
+
+  pytest:
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.3', '3.4', '3.5', '3.6', '3.7', '3.8', '3.9', '3.10']
+    name: Pytest on Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup python
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Run pytest
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+        run: dpkg --compare-versions "$PYTHON_VERSION" "gt" "3.4" && pytest --tb=long --full-trace --color=yes --code-highlight=yes || pytest --tb=long --full-trace --color=yes
