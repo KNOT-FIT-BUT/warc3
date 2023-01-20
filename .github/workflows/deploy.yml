@@ -1,0 +1,72 @@
+# Github Action for deploying new releases --> Github release and PyPI package
+
+name: 'Deploy'
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-package:
+    runs-on: ubuntu-latest
+    name: Build pip package
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: python3 -m pip install --upgrade pip build
+
+      - name: Build a Python package for pip
+        run: python3 -m build
+
+      - name: Share created package with next jobs
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-package
+          path: dist
+
+  github-release:
+    needs: [build-package]
+    runs-on: ubuntu-latest
+    name: Create Github release
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get (shared) built package
+        uses: actions/download-artifact@v3
+        with:
+          name: built-package
+          path: dist
+
+      - id: version
+        name: Get configured version
+        run: echo "VERSION=$(grep -oE 'version = "([0-9.+]+)"' pyproject.toml | sed -E 's/.*"([0-9.]+)"/\1/g')" >> $GITHUB_OUTPUT
+
+      - name: Create a Github release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/knot_warc-*.tar.gz
+            dist/knot_warc-*-py3-none-any.whl
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+
+#  pypi-package:
+#    needs: [build-package]
+#    runs-on: ubuntu-latest
+#    name: Publish pip package to PyPI
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Get (shared) built package
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: built-package
+#          path: dist
+#
+#      - name: Publish as a Package to PyPI
+#        uses: pypa/gh-action-pypi-publish@v1.6.4
+#        with:
+#          password: ${{ secrets.PYPI_API_TOKEN }}
