@@ -6,11 +6,7 @@ This file is part of warc
 
 :copyright: (c) 2012 Internet Archive
 """
-
-from collections import MutableMapping, Mapping
-from http.client import HTTPMessage
-import email.parser
-import sys
+from collections.abc import MutableMapping
 import re
 
 SEP = re.compile("[;:=]")

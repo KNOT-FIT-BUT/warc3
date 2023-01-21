@@ -1,7 +1,13 @@
+# Editor and IDE files
+.ropeproject/
+.idea/
+
+# Build
 *.pyc
 *.egg-info/
 docs/_build/
 build/
+
+# Test coverage
 .coverage
 htmlcov/
-.ropeproject/
