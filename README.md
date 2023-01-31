@@ -64,6 +64,9 @@ This software is licensed under GPL v2. See [LICENSE](http://github.com/internet
 
 ## Change Log
 
+**0.2.5**:
+- Update sphinx docs
+
 **0.2.4**:
 - Fix for Python 3.10+
 - Upgrade HTTP --> HTTPS in tests
