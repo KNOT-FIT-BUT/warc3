@@ -6,30 +6,26 @@
 warc: Python library to work with ARC and WARC files
 ====================================================
 
-`ARC <http://www.archive.org/web/researcher/ArcFileFormat.php>`_ is a file format for storing web crawls as sequences of content blocks. It was developed in 1996 by Internet Archive. 
+`ARC <https://www.archive.org/web/researcher/ArcFileFormat.php>`_ is a file format for storing web crawls as sequences of content blocks. It was developed in 1996 by Internet Archive.
 
 `WARC (Web ARChive) <http://bibnum.bnf.fr/WARC/>`_ is an extension of the ARC file format, which adds more freedom by adding more metadata to each record and allowing named headers.
 
 This python library works with files stored in both ARC and WARC formats.
 
+This documentation belongs to the `fork <https://github.com/KNOT-FIT-BUT/warc3>`_ of original WARC repository owned by `Knowledge Technology Research Group <https://knot.fit.vutbr.cz/>`_. Its content is mostly inherited from older forks and the original repository.
+
 Installation
 ------------
 
-Installing warc is simple with `pip <http://www.pip-installer.org/>`_::
+Installing warc is simple with `pip <http://www.pip-installer.org/>`_ (from `PyPI <https://pypi.org/project/warc-knot/>`_)::
 
-    $ pip install warc
-	
-or, with `easy_install <http://pypi.python.org/pypi/setuptools>`_::
-
-    $ easy_install warc
+    $ pip install warc-knot
 
 Or you can get the sources by cloning the public git repository::
 
-    git clone git://github.com/anandology/warc.git
-	
-and install from sources::
+    git clone git://github.com/KNOT-FIT-BUT/warc3.git
 
-	$ python setup.py install
+... and importing the library from local directory.
 
 Reading a WARC File
 -------------------
@@ -41,7 +37,7 @@ Reading a warc file is as simple as reading a simple file. Instead of returning 
     import warc
     f = warc.open("test.warc.gz")
     for record in f:
-        print( record['WARC-Target-URI'], record['Content-Length'])
+        print(record['WARC-Target-URI'], record['Content-Length'])
 
 The ``open`` function is a shorthand for :class:`warc.WARCFile`.::
 

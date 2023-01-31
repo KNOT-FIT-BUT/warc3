@@ -1,0 +1,28 @@
+# Github workflow for automatic generation and uploading of sphinx docs
+
+name: 'Docs'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+
+jobs:
+  sphinx-docs:
+    name: Generate and publish sphinx docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ammaraskar/sphinx-action@master
+        with:
+          docs-folder: "docs/"
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_build/html/

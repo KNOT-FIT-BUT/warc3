@@ -1,4 +1,4 @@
-# Github Action for automatic tests
+# Github workflow for automatic tests
 
 name: 'Tests'
 

@@ -34,14 +34,11 @@ There are some examples provided without warranty and support (just for inspirat
 
 ## Documentation
 
-The documentation of the warc library is available at http://warc.readthedocs.org/.
+The documentation of this fork of the warc library is on [Github Pages](https://knot-fit-but.github.io/warc3) (alternatively see [original documentation](http://warc.readthedocs.org/)).
 
-Apart from the installation from pip, which will not work for this warc3 version, the
-interface as described there is unchanged.
+## Installation
 
-### Installation of this version
-
-If you want to use this version of WARC library, use this command for installation (for pip):
+You can install this fork of warc library using [pip](http://www.pip-installer.org/):
 ```shell
 pip install warc-knot
 ```

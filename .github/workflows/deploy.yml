@@ -1,4 +1,4 @@
-# Github Action for deploying new releases --> Github release and PyPI package
+# Github workflow for deploying new releases --> Github release and PyPI package
 # Deploy is run only when new version is set in package config file
 
 name: 'Deploy'
@@ -11,6 +11,7 @@ on:
     paths:
       - 'warc/**'
       - 'test_data/**'
+      - 'docs/**'
 
 jobs:
   version:
