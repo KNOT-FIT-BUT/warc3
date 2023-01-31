@@ -12,6 +12,7 @@ on:
       - 'warc/**'
       - 'test_data/**'
       - 'docs/**'
+      - 'pyproject.toml'
 
 jobs:
   version:
