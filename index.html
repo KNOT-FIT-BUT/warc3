@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>warc: Python library to work with ARC and WARC files &#8212; warc 0.2 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">warc 0.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="warc-python-library-to-work-with-arc-and-warc-files">
+<h1>warc: Python library to work with ARC and WARC files<a class="headerlink" href="#warc-python-library-to-work-with-arc-and-warc-files" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://www.archive.org/web/researcher/ArcFileFormat.php">ARC</a> is a file format for storing web crawls as sequences of content blocks. It was developed in 1996 by Internet Archive.</p>
+<p><a class="reference external" href="http://bibnum.bnf.fr/WARC/">WARC (Web ARChive)</a> is an extension of the ARC file format, which adds more freedom by adding more metadata to each record and allowing named headers.</p>
+<p>This python library works with files stored in both ARC and WARC formats.</p>
+<p>This documentation belongs to the <a class="reference external" href="https://github.com/KNOT-FIT-BUT/warc3">fork</a> of original WARC repository owned by <a class="reference external" href="https://knot.fit.vutbr.cz/">Knowledge Technology Research Group</a>. Its content is mostly inherited from older forks and the original repository.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Installing warc is simple with <a class="reference external" href="http://www.pip-installer.org/">pip</a> (from <a class="reference external" href="https://pypi.org/project/warc-knot/">PyPI</a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install warc-knot
+</pre></div>
+</div>
+<p>Or you can get the sources by cloning the public git repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">KNOT</span><span class="o">-</span><span class="n">FIT</span><span class="o">-</span><span class="n">BUT</span><span class="o">/</span><span class="n">warc3</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>… and importing the library from local directory.</p>
+</div>
+<div class="section" id="reading-a-warc-file">
+<h2>Reading a WARC File<a class="headerlink" href="#reading-a-warc-file" title="Permalink to this headline">¶</a></h2>
+<p>Reading a warc file is as simple as reading a simple file. Instead of returning lines, it returns WARC records.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warc</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test.warc.gz&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;WARC-Target-URI&#39;</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">open</span></code> function is a shorthand for <code class="xref py py-class docutils literal notranslate"><span class="pre">warc.WARCFile</span></code>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCFile</span><span class="p">(</span><span class="s2">&quot;test.warc.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCFile</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">StringIO</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-warc-file">
+<h2>Writing WARC File<a class="headerlink" href="#writing-warc-file" title="Permalink to this headline">¶</a></h2>
+<p>Writing to a warc file is similar to writing to a regular file.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test.warc.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write_record</span><span class="p">(</span><span class="n">warc_record1</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write_record</span><span class="p">(</span><span class="n">warc_record2</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="working-with-warc-header">
+<h2>Working with WARC Header<a class="headerlink" href="#working-with-warc-header" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">warc.WARCHeader</span></code> object contains the list of WARC headers specified before the payload. It is just a dictionary.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCHeader</span><span class="p">({</span>
+<span class="gp">... </span>  <span class="s2">&quot;WARC-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;response&quot;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s2">&quot;WARC-Date&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-02-03T04:05:06Z&quot;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s2">&quot;WARC-Record-ID&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;urn:uuid:80fb9262-5402-11e1-8206-545200690126&gt;&quot;</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="s2">&quot;Content-Length&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;WARC-Type&#39;</span><span class="p">]</span>
+<span class="go">&#39;response&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;WARC-Record-ID&#39;</span><span class="p">]</span>
+<span class="go">&#39;&lt;urn:uuid:80fb9262-5402-11e1-8206-545200690126&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span>
+<span class="go">&#39;42&#39;</span>
+</pre></div>
+</div>
+<p>The headers are case-insensitive.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;warc-type&#39;</span><span class="p">]</span>
+<span class="go">&#39;response&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;WARC-RECORD-ID&#39;</span><span class="p">]</span>
+<span class="go">&#39;&lt;urn:uuid:80fb9262-5402-11e1-8206-545200690126&gt;&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">WARCHeader</span></code> object is a real dictionary.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;warc-type&#39;, &#39;content-length&#39;, &#39;warc-date&#39;, &#39;warc-record-id&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="go">[&#39;response&#39;, &#39;42&#39;, &#39;2012-02-03T04:05:06Z&#39;, &#39;&lt;urn:uuid:80fb9262-5402-11e1-8206-545200690126&gt;&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;application/octet-stream&quot;</span><span class="p">)</span>
+<span class="go">&#39;application/octet-stream&#39;</span>
+</pre></div>
+</div>
+<p>The commonly used headers are accessible as attributes as well.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">type</span>
+<span class="go">&#39;response&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">record_id</span>
+<span class="go">&#39;&lt;urn:uuid:80fb9262-5402-11e1-8206-545200690126&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">content_length</span>
+<span class="go">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">.</span><span class="n">date</span>
+<span class="go">&quot;2012-02-03T04:05:06Z&quot;</span>
+</pre></div>
+</div>
+<p>Note that, <code class="docutils literal notranslate"><span class="pre">h.content_length</span></code> is an integer where as <code class="docutils literal notranslate"><span class="pre">h['Content-Length']</span></code> is a string.</p>
+<p>When a new <code class="docutils literal notranslate"><span class="pre">WARCHeader</span></code> object is created, the <code class="docutils literal notranslate"><span class="pre">WARC-Record-ID</span></code>, <code class="docutils literal notranslate"><span class="pre">WARC-Date</span></code> and <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> headers can be initialized automatically.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCHeader</span><span class="p">({</span><span class="s2">&quot;WARC-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;response&quot;</span><span class="p">},</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;WARC-Record-ID&#39;</span><span class="p">]</span>
+<span class="go">&#39;&lt;urn:uuid:3457ee2c-5e2c-11e1-a8ff-c42c0325ac11&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;WARC-Date&#39;</span><span class="p">]</span>
+<span class="go">&#39;2012-02-23T14:39:34Z&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span>
+<span class="go">&#39;application/http; msgtype=response&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">WARC-Record-ID</span></code> is set to a UUID, <code class="docutils literal notranslate"><span class="pre">WARC-Date</span></code> is set to current datetime and <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> is initialized based on the <code class="docutils literal notranslate"><span class="pre">WARC-Type</span></code>.</p>
+</div>
+<div class="section" id="working-with-warcrecord">
+<h2>Working with WARCRecord<a class="headerlink" href="#working-with-warcrecord" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">WARCRecord</span></code> can be created by passing a <code class="docutils literal notranslate"><span class="pre">WARCHeader</span></code> object and payload, which defaults to None when unspecified.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">header</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCHeader</span><span class="p">({</span><span class="s2">&quot;WARC-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;response&quot;</span><span class="p">},</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCRecord</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="s2">&quot;helloworld&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or by passing a dictionary of headers.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">warc</span><span class="o">.</span><span class="n">WARCRecord</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="s2">&quot;helloworld&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;WARC-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;response&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>The warc library is licensed under GPL v2 license. See <a class="reference external" href="https://github.com/internetarchive/warc/blob/master/LICENSE">LICENSE</a> file for details.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">warc: Python library to work with ARC and WARC files</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#reading-a-warc-file">Reading a WARC File</a></li>
+<li><a class="reference internal" href="#writing-warc-file">Writing WARC File</a></li>
+<li><a class="reference internal" href="#working-with-warc-header">Working with WARC Header</a></li>
+<li><a class="reference internal" href="#working-with-warcrecord">Working with WARCRecord</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">warc 0.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Internet Archive.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
