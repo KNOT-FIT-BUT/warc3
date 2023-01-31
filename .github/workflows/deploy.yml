@@ -40,8 +40,8 @@ jobs:
           NEW_VERSION: ${{ steps.version.outputs.VERSION }}
         run: echo "CONTINUE=$(dpkg --compare-versions "$NEW_VERSION" "gt" $(echo "$OLD_VERSION" | sed -E 's/v(.*)/\1/') && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
     outputs:
-      version: ${{ steps.version.VERSION }}
-      continue: ${{ steps.check.CONTINUE }}
+      version: ${{ steps.version.outputs.VERSION }}
+      continue: ${{ steps.check.outputs.CONTINUE }}
 
   build-package:
     needs: [version]
