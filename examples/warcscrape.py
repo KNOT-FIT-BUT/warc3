@@ -1,4 +1,6 @@
 #! /usr/bin/env python3
+# This is original example of extracting properties from WARC files created by Ryan Chartier (https://github.com/recrm).
+# No support for this peace of code is provided.
 import os
 import re
 import argparse

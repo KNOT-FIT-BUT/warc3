@@ -12,7 +12,9 @@
 
 WARC (Web ARChive) is a file format for storing web crawls (see http://bibnum.bnf.fr/WARC/).
 
-This `warc` library makes it very easy to work with WARC files.:
+## Examples
+
+This `warc` library makes it very easy to work with WARC files:
 ```python
 import warc
 with warc.open("test.warc") as f:
@@ -20,13 +22,15 @@ with warc.open("test.warc") as f:
         print(record['WARC-Target-URI'], record['Content-Length'])
 ```
 
-And WET files.:
+And WET files:
 ```python
 import warc
 with warc.open("test.warc.wet") as f:
     for record in f:
         print(record['WARC-Target-URI'], record['Content-Length'])
 ```
+
+There are some examples provided without warranty and support (just for inspiration) in [examples](https://github.com/KNOT-FIT-BUT/warc3/tree/master/examples) folder. They are not updated at all, too.
 
 ## Documentation
 
