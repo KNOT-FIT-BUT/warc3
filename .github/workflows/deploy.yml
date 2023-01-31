@@ -3,9 +3,13 @@
 name: 'Deploy'
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
+    paths:
+      - 'warc/**'
+      - 'test_data/**'
 
 jobs:
   build-package:
