@@ -43,7 +43,7 @@ jobs:
 
   build-package:
     needs: [version]
-    if: needs.version.outputs.continue == 'true'
+    if: ${{ needs.version.outputs.continue == 'true' }}
     runs-on: ubuntu-latest
     name: Build pip package
     steps:
