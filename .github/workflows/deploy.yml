@@ -1,14 +1,47 @@
 # Github Action for deploying new releases --> Github release and PyPI package
+# Deploy is run only when new version is set in package config file
 
 name: 'Deploy'
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
+    paths:
+      - 'warc/**'
+      - 'test_data/**'
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    name: Get and check configured version
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: version
+        name: Get configured version
+        run: echo "VERSION=$(grep -oE 'version = "([0-9.+]+)"' pyproject.toml | sed -E 's/.*"([0-9.]+)"/\1/g')" >> $GITHUB_OUTPUT
+
+      - id: lasttag
+        name: Get last tag (named by old version)
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: v0.2.3
+
+      - id: check
+        name: Check version correctness
+        env:
+          OLD_VERSION: ${{ steps.lasttag.outputs.tag }}
+          NEW_VERSION: ${{ steps.version.outputs.VERSION }}
+        run: echo "CONTINUE=$(dpkg --compare-versions "$NEW_VERSION" "gt" $(echo "$OLD_VERSION" | sed -E 's/v(.*)/\1/') && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+    outputs:
+      version: ${{ steps.version.VERSION }}
+      continue: ${{ steps.check.CONTINUE }}
+
   build-package:
+    needs: [version]
+    if: needs.version.outputs.continue == 'true'
     runs-on: ubuntu-latest
     name: Build pip package
     steps:
@@ -27,7 +60,7 @@ jobs:
           path: dist
 
   github-release:
-    needs: [build-package]
+    needs: [build-package, version]
     runs-on: ubuntu-latest
     name: Create Github release
     steps:
@@ -39,17 +72,13 @@ jobs:
           name: built-package
           path: dist
 
-      - id: version
-        name: Get configured version
-        run: echo "VERSION=$(grep -oE 'version = "([0-9.+]+)"' pyproject.toml | sed -E 's/.*"([0-9.]+)"/\1/g')" >> $GITHUB_OUTPUT
-
       - name: Create a Github release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             dist/warc_knot-*.tar.gz
             dist/warc_knot-*-py3-none-any.whl
-          tag_name: v${{ steps.version.outputs.VERSION }}
+          tag_name: v${{ needs.version.outputs.version }}
           fail_on_unmatched_files: true
           generate_release_notes: true
 
