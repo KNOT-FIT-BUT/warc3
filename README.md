@@ -64,12 +64,8 @@ This software is licensed under GPL v2. See [LICENSE](http://github.com/internet
 
 ## Change Log
 
-**0.2.5**:
-- Update sphinx docs
-
-**0.2.4**:
-- Fix for Python 3.10+
-- Upgrade HTTP --> HTTPS in tests
+This is just a changelog for older releases created by older contributors to the WARC project (throw various forks).
+Change log of this fork is available in GitHub [releases](https://github.com/KNOT-FIT-BUT/warc3/releases).
 
 **0.2.3**
 - Support seeking in WARC/WET
