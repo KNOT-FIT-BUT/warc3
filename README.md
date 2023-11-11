@@ -1,6 +1,6 @@
-# knot-warc - Python library to work with Web ARChive files
+# warc-knot - Python library to work with Web ARChive files
 
-*Note: This is one of forks of original WARC repository. It was primarily created for projects of [Knowledge Technology Research Group](https://knot.fit.vutbr.cz/), but its public-wide usage isn't limited.*
+*Note: This is one of the forks of the original WARC repository. It was primarily created for projects of [Knowledge Technology Research Group](https://knot.fit.vutbr.cz/), but its public-wide usage isn't limited.*
 <details>
 <summary>Fork history</summary>
 
@@ -14,7 +14,7 @@ WARC (Web ARChive) is a file format for storing web crawls (see http://bibnum.bn
 
 ## Examples
 
-This `warc` library makes it very easy to work with WARC files:
+This `warc` library makes it straightforward to work with WARC files:
 ```python
 import warc
 with warc.open("test.warc") as f:
@@ -30,11 +30,14 @@ with warc.open("test.warc.wet") as f:
         print(record['WARC-Target-URI'], record['Content-Length'])
 ```
 
-There are some examples provided without warranty and support (just for inspiration) in [examples](https://github.com/KNOT-FIT-BUT/warc3/tree/master/examples) folder. They are not updated at all, too.
+There are some examples provided without a warranty and support (just for inspiration)
+in [examples](https://github.com/KNOT-FIT-BUT/warc3/tree/master/examples) folder.
+They are not updated at all, too.
 
 ## Documentation
 
-The documentation of this fork of the warc library is on [Github Pages](https://knot-fit-but.github.io/warc3) (alternatively see [original documentation](http://warc.readthedocs.org/)).
+The current fork's documentation of the warc library is on [GitHub Pages](https://knot-fit-but.github.io/warc3)
+(alternatively, see [original documentation](http://warc.readthedocs.org/)).
 
 ## Installation
 
@@ -54,7 +57,7 @@ This software is licensed under GPL v2. See [LICENSE](http://github.com/internet
 - Noufal Ibrahim
 
 **Python3 Port:**
-- Ryan Chartier 
+- Ryan Chartier
 - Jan Pieter Bruins Slot
 - Almer S. Tigelaar
 
