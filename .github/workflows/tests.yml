@@ -29,16 +29,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup python
-        uses: actions/setup-python@v4.5.0
-        with:
-          python-version: ${{ matrix.python-version }}
-          architecture: x64
+      - name: Setup micromamba
+        run: |
+          wget -O micromamba https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-linux-64
+          chmod +x ./micromamba
 
-      - name: Install dependencies
-        run: pip install pytest
+      - name: Create and prepare Mamba/Conda environment
+        run: ./micromamba create -n warc python==${{ matrix.python-version }} pytest
 
       - name: Run pytest
         env:
           PYTHON_VERSION: ${{ matrix.python-version }}
-        run: dpkg --compare-versions "$PYTHON_VERSION" "gt" "3.4" && pytest --tb=long --full-trace --color=yes --code-highlight=yes || pytest --tb=long --full-trace --color=yes
+        run: dpkg --compare-versions "$PYTHON_VERSION" "gt" "3.4" && ./micromamba run -n warc pytest --tb=long --full-trace --color=yes --code-highlight=yes || ./micromamba run -n warc pytest --tb=long --full-trace --color=yes
