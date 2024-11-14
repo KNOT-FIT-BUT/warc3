@@ -17,7 +17,7 @@ authors = [{ name = "Anand Chitipothu" },
     { name = "Michal Šmahel" }]
 description = "Python library to work with ARC, WARC and WET files"
 readme = "README.md"
-requires-python = ">=3.3"
+requires-python = ">=3.4"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
