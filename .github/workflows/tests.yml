@@ -20,7 +20,7 @@ jobs:
         run: python3 -m build
 
   pytest:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
